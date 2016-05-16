@@ -7,6 +7,8 @@ Create Dash docset for Bukkit
 
 This project requires SBT 0.13
 
-### Quickstart
+### Run it
 
-    sbt update compile test run
+
+
+    sbt run
