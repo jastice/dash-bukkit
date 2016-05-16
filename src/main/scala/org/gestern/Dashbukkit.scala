@@ -71,14 +71,13 @@ object Dashbukkit extends App with StrictLogging {
       val feedData = feedXml(version)
       XML.save(feedFile.getAbsolutePath, feedData)
       gitThis.add().setUpdate(true).addFilepattern("feed/").call()
-
+      gitThis.tag().setForceUpdate(true).setName(s"v$version").call()
       try {
         gitThis.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
-        gitThis.tag().setForceUpdate(true).setName(s"v$version").call()
-        gitThis.push().setPushTags().call()
       } catch {
         case _: EmtpyCommitException => // ignore
       }
+      gitThis.push().setPushTags().call()
 
     } else sys.error("error creating javadoc")
 
