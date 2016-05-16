@@ -82,7 +82,7 @@ object Dashbukkit extends App with StrictLogging {
 
       val githubToken = sys.env("GITHUB_TOKEN")
       val credentials = new UsernamePasswordCredentialsProvider(githubToken, "")
-      gitThis.push().setPushTags().setCredentialsProvider(credentials).call()
+      gitThis.push().setPushTags().setRemote("https://github.com/jastice/dash-bukkit.git").setCredentialsProvider(credentials).call()
 
     }
     else sys.error("error creating javadoc")
