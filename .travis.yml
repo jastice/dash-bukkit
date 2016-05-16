@@ -6,8 +6,7 @@ jdk:
   - oraclejdk8
 
 # this is the actual script
-before_deploy:
-  sbt run
+script: sbt run
 
 deploy:
   - provider: releases
