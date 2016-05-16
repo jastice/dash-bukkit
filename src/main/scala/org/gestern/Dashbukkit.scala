@@ -9,8 +9,10 @@ import org.eclipse.jgit.api.errors.EmtpyCommitException
 import org.eclipse.jgit.errors.RepositoryNotFoundException
 import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import org.rogach.scallop._
 
+import scala.collection.JavaConverters._
 import scala.sys.process._
 import scala.xml.{Elem, XML}
 
@@ -77,9 +79,13 @@ object Dashbukkit extends App with StrictLogging {
       } catch {
         case _: EmtpyCommitException => // ignore
       }
-      gitThis.push().setPushTags().call()
 
-    } else sys.error("error creating javadoc")
+      val githubToken = sys.env("GITHUB_TOKEN")
+      val credentials = new UsernamePasswordCredentialsProvider(githubToken, "")
+      gitThis.push().setPushTags().setCredentialsProvider(credentials).call()
+
+    }
+    else sys.error("error creating javadoc")
 
   }
   else sys.error("pull failed")
