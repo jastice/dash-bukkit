@@ -74,10 +74,11 @@ object Dashbukkit extends App with StrictLogging {
 
       try {
         gitThis.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
+        gitThis.tag().setForceUpdate(true).setName(s"v$version").call()
+        gitThis.push().setPushTags().call()
       } catch {
         case _: EmtpyCommitException => // ignore
       }
-      gitThis.tag().setForceUpdate(true).setName(s"v$version").call()
 
     } else sys.error("error creating javadoc")
 
