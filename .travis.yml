@@ -6,7 +6,7 @@ jdk:
   - oraclejdk8
 
 # this is the actual script
-script: sbt run
+script: sbt clean run
 
 deploy:
   - provider: releases
@@ -33,5 +33,4 @@ before_cache:
 cache:
   directories:
     - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot/
     - $HOME/.m2/
