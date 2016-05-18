@@ -12,7 +12,7 @@ deploy:
   - provider: releases
     skip_cleanup: true
     api_key:
-      secure: GqBVV6OCdr6n6KSaq14X+2f2+I1mTwPqpQ7L6sdPUZUD/ziXA4rySZ9R3MYYxZWo/SOvAzX5ab8QpJSGnPoXZncL7dxFmO3FfE0WMHy74FCinuRWQ2ziBK4TEJBOVGfJqTvyutmCXLniw5G8uQxozkEUpjKJm3i1bjA+7X+7qlI=
+      secure: "AOlEhsZVZuMeDh4TRQ/p9oV5H70lxG/7QJXn/QnpmWvg9l7M6ZGnOfDutLZ84CApvEyHHdrjlXbYLPuJDPqaB3BepjoRztdyfE2ZMGfdbgHaAgrSneHth66xYdqPYJYFnrYd+oOf4uT5gHPvZIFbf1uh+9hZrIIVZCptMGlEZvPnPTjXLNw/blTp97mqarG+0WA2mqnWXA/0FaZrmRlb4zgd535fGR1x3XqT99/TnRN7/Cu+gFSQKv6b9CHdz8NNWODX+SVthNFoeah7N5cOABLlTsZXaI7FWVBSkvLGBe/b2aPUOXmS03kqmqZCo77Xc3iexvlXbxqxgDsQs0tUQf+p4D+9rQiRxTfETGiGijzAtQecuH9ql4JM+ys94TlHjXSA3OUvAHGKNTbMQtMgYVYI3FQk6hBiDM3Uib7MeWz8yf4M4bKdvu3uMEjMqYcPhe9Qp521OPpYwzxo4WJaz/wPZPtyheFl+2yFotSbmq6HvgTQ9TLttaE1efnDBJoE6nc8orct7zDNy5VnuI20/A0V0kxQBHn1Tc7HhZ5iKCnyeOEIT+Kdedrc2Czof4/8KEdvFLsmn6yOAgkEHNetVFKDSlyVAX5FQU3E4hmWqlxOJdaJEv5RyyFvlEDdOUYLkbFGSOHvSIGLuQyMT4wac5bOX+uvZCw5UWXhV1HWB5s="
     file_glob: true
     file: target/bukkit-*.tgz
     overwrite: true
