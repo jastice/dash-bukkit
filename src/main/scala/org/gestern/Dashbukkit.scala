@@ -42,7 +42,7 @@ object Dashbukkit extends StrictLogging {
       new Git(repo)
     }
     // Travis checks out in detached head state
-    selfGit.fetch().setRefSpecs(new RefSpec("master:master")).call()
+    selfGit.fetch().setRemote("origin").setRefSpecs(new RefSpec("master")).call()
     selfGit.checkout().setName("master").call()
 
     targetDir.mkdir()
