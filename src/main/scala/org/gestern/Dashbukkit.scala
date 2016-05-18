@@ -38,7 +38,7 @@ object Dashbukkit extends StrictLogging {
     val bukkitGit = cloneOrUpdate(bukkitRepo, bukkitDir, credentialsProvider)
 
     val selfGit = {
-      val repo = FileRepositoryBuilder.create(new File("."))
+      val repo = new FileRepositoryBuilder().setMustExist(true).setWorkTree(new File(".")).build()
       new Git(repo)
     }
 
@@ -72,7 +72,7 @@ object Dashbukkit extends StrictLogging {
 
       val feedData = feedXml(version)
       XML.save(feedFile.getAbsolutePath, feedData)
-      selfGit.add().setUpdate(true).addFilepattern(".").call()
+      selfGit.add().setUpdate(true).addFilepattern(feedDir.getName).call()
       selfGit.tag().setForceUpdate(true).setName(s"v$version").call()
       try {
         selfGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
