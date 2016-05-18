@@ -77,7 +77,8 @@ object Dashbukkit extends StrictLogging {
       try {
         selfGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
       } catch {
-        case _: EmtpyCommitException => // ignore
+        case _: EmtpyCommitException =>
+          println("no changes to feed; no commit necessary")
       }
 
       attemptPush( selfGit.push().setCredentialsProvider(credentialsProvider) )
