@@ -1,8 +1,6 @@
 package org.gestern
 
 import java.io._
-import java.nio.file.{Files, Paths}
-import java.security.{DigestInputStream, MessageDigest}
 
 import com.megatome.j2d.DocsetCreator
 import com.typesafe.scalalogging.StrictLogging
@@ -31,25 +29,26 @@ object Dashbukkit extends StrictLogging {
     val githubToken = sys.env("GITHUB_TOKEN")
     val credentialsProvider = new UsernamePasswordCredentialsProvider(githubToken, "")
 
-    val feedRepo = "https://github.com/jastice/dash-bukkit-feed.git"
     val feedDir = new File("dash-bukkit-feed/")
     val feedFile = new File(feedDir, s"$docsetName.xml")
     val feedHashFile = new File(feedDir, ".hash")
-    val feedGit = cloneOrUpdate(feedRepo, feedDir, credentialsProvider)
 
     val bukkitRepo = "https://hub.spigotmc.org/stash/scm/spigot/bukkit.git"
     val bukkitDir = new File("bukkit/")
     val bukkitGit = cloneOrUpdate(bukkitRepo, bukkitDir, credentialsProvider)
 
+    val selfGit = {
+      val repo = FileRepositoryBuilder.create(new File("."))
+      new Git(repo)
+    }
+
     targetDir.mkdir()
 
     val bukkitPull = bukkitGit.pull.setStrategy(MergeStrategy.THEIRS).call()
-    val feedPull = feedGit.pull.setStrategy(MergeStrategy.THEIRS).call()
 
     // something monad-y would be nicer here
     val createdJavaDoc =
       bukkitPull.isSuccessful &&
-        feedPull.isSuccessful &&
         Process("mvn javadoc:javadoc", bukkitDir).! == 0
 
     if (createdJavaDoc) {
@@ -73,20 +72,19 @@ object Dashbukkit extends StrictLogging {
 
       val feedData = feedXml(version)
       XML.save(feedFile.getAbsolutePath, feedData)
-      feedGit.add().setUpdate(true).addFilepattern(".").call()
-      feedGit.tag().setForceUpdate(true).setName(s"v$version").call()
+      selfGit.add().setUpdate(true).addFilepattern(".").call()
+      selfGit.tag().setForceUpdate(true).setName(s"v$version").call()
       try {
-        feedGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
+        selfGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
       } catch {
         case _: EmtpyCommitException => // ignore
       }
-      feedGit.push().setCredentialsProvider(credentialsProvider).call()
-      feedGit.push().setCredentialsProvider(credentialsProvider).setPushTags().call()
+      selfGit.push().setCredentialsProvider(credentialsProvider).call()
+      selfGit.push().setCredentialsProvider(credentialsProvider).setPushTags().call()
 
     } else sys.error("error pulling or creating javadoc or something")
 
     def targetTgz(version: String) = new File(targetDir, s"$docsetName-$version.tgz")
-
   }
 
 

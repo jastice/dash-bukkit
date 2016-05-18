@@ -17,7 +17,7 @@ deploy:
     file: target/bukkit-*.tgz
     overwrite: true
     on:
-      repo: jastice/dash-bukkit-feed
+      repo: jastice/dash-bukkit
       tags: true
 
 # we don't need sudo, this allows container-based builds ...
