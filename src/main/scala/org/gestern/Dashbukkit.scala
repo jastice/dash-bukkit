@@ -29,7 +29,7 @@ object Dashbukkit extends StrictLogging {
     val githubToken = sys.env("GITHUB_TOKEN")
     val credentialsProvider = new UsernamePasswordCredentialsProvider(githubToken, "")
 
-    val feedDir = new File("dash-bukkit-feed/")
+    val feedDir = new File("feed/")
     val feedFile = new File(feedDir, s"$docsetName.xml")
     val feedHashFile = new File(feedDir, ".hash")
 
