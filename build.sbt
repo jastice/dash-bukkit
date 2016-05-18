@@ -18,5 +18,3 @@ libraryDependencies ++= Seq(
   "org.eclipse.jgit" % "org.eclipse.jgit" % "4.3.1.201605051710-r"
 )
 
-initialCommands := "import org.gestern.dashbukkit._"
-

@@ -1,6 +1,6 @@
 package org.gestern
 
-import java.io._
+import java.io.{File, FileWriter}
 
 import com.megatome.j2d.DocsetCreator
 import com.typesafe.scalalogging.StrictLogging
@@ -100,7 +100,7 @@ object Dashbukkit extends StrictLogging {
   def feedXml(version: String): Elem = {
     <entry>
       <version>{version}</version>
-      <url>https://github.com/jastice/dash-bukkit/archive/bukkit-{version}.tgz</url>
+      <url>https://github.com/jastice/dash-bukkit/releases/download/v{version}/bukkit-{version}.tgz</url>
     </entry>
   }
 
