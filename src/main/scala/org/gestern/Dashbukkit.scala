@@ -41,6 +41,8 @@ object Dashbukkit extends StrictLogging {
       val repo = new FileRepositoryBuilder().setMustExist(true).setWorkTree(new File(".")).build()
       new Git(repo)
     }
+    // Travis checks out in detached head state
+    selfGit.checkout().setName("master").call()
 
     targetDir.mkdir()
 
@@ -72,14 +74,15 @@ object Dashbukkit extends StrictLogging {
 
       val feedData = feedXml(version)
       XML.save(feedFile.getAbsolutePath, feedData)
-      selfGit.add().setUpdate(true).addFilepattern(".").call()
-      selfGit.tag().setForceUpdate(true).setName(s"v$version").call()
+      selfGit.add().setUpdate(true).addFilepattern(feedDir.getName).call()
       try {
         selfGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
       } catch {
         case _: EmtpyCommitException =>
           println("no changes to feed; no commit necessary")
       }
+
+      selfGit.tag().setForceUpdate(true).setName(s"v$version").call()
 
       attemptPush( selfGit.push().setCredentialsProvider(credentialsProvider) )
       attemptPush( selfGit.push().setCredentialsProvider(credentialsProvider).setPushTags() )
