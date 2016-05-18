@@ -72,7 +72,7 @@ object Dashbukkit extends StrictLogging {
 
       val feedData = feedXml(version)
       XML.save(feedFile.getAbsolutePath, feedData)
-      selfGit.add().setUpdate(true).addFilepattern(feedDir.getName).call()
+      selfGit.add().setUpdate(true).addFilepattern(".").call()
       selfGit.tag().setForceUpdate(true).setName(s"v$version").call()
       try {
         selfGit.commit().setAllowEmpty(false).setMessage(s"update feed for $version").call()
