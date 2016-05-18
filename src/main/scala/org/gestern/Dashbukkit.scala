@@ -4,8 +4,8 @@ import java.io._
 
 import com.megatome.j2d.DocsetCreator
 import com.typesafe.scalalogging.StrictLogging
-import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.api.errors.EmtpyCommitException
+import org.eclipse.jgit.api.{Git, PushCommand}
+import org.eclipse.jgit.api.errors.{EmtpyCommitException, TransportException}
 import org.eclipse.jgit.errors.RepositoryNotFoundException
 import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
@@ -79,12 +79,21 @@ object Dashbukkit extends StrictLogging {
       } catch {
         case _: EmtpyCommitException => // ignore
       }
-      selfGit.push().setCredentialsProvider(credentialsProvider).call()
-      selfGit.push().setCredentialsProvider(credentialsProvider).setPushTags().call()
+
+      attemptPush( selfGit.push().setCredentialsProvider(credentialsProvider) )
+      attemptPush( selfGit.push().setCredentialsProvider(credentialsProvider).setPushTags() )
 
     } else sys.error("error pulling or creating javadoc or something")
 
     def targetTgz(version: String) = new File(targetDir, s"$docsetName-$version.tgz")
+  }
+
+  def attemptPush(cmd: PushCommand) = {
+    try { cmd.call() }
+    catch {
+      case x: TransportException if x.getMessage contains "Nothing to push" =>
+        println(x.getMessage)
+    }
   }
 
 
