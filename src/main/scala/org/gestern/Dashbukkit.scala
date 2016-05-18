@@ -9,7 +9,7 @@ import org.eclipse.jgit.api.errors.{EmtpyCommitException, TransportException}
 import org.eclipse.jgit.errors.RepositoryNotFoundException
 import org.eclipse.jgit.merge.MergeStrategy
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
+import org.eclipse.jgit.transport.{RefSpec, UsernamePasswordCredentialsProvider}
 
 import scala.sys.process._
 import scala.xml.{Elem, XML}
@@ -42,6 +42,7 @@ object Dashbukkit extends StrictLogging {
       new Git(repo)
     }
     // Travis checks out in detached head state
+    selfGit.fetch().setRefSpecs(new RefSpec("master:master")).call()
     selfGit.checkout().setName("master").call()
 
     targetDir.mkdir()
