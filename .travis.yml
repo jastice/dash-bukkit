@@ -24,6 +24,13 @@ deploy:
 sudo: false
 
 # ... which allows caching of .m2 and makes builds faster
+
+before_cache:
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
+  - find $HOME/.sbt -name "*.lock" -delete
+
 cache:
   directories:
-  - $HOME/.ivy2
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/
